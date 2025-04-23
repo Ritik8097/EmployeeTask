@@ -14,7 +14,7 @@ const EmployeeDashboard = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/tasks/employee/${user.id}`, {
+        const response = await axios.get(`https://employeetaskbackend.onrender.com/api/tasks/employee/${user.id}`, {
           headers: { Authorization: `Bearer ${user.token}` }
         });
         setTasks(response.data);
@@ -30,7 +30,7 @@ const EmployeeDashboard = () => {
 
   const addTask = async (newTask) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/tasks', 
+      const response = await axios.post('https://employeetaskbackend.onrender.com/api/tasks', 
         { ...newTask, employeeId: user.id },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
@@ -44,7 +44,7 @@ const EmployeeDashboard = () => {
 
   const updateTask = async (id, updatedTask) => {
     try {
-      const response = await axios.put(`http://localhost:5000/api/tasks/${id}`, 
+      const response = await axios.put(`https://employeetaskbackend.onrender.com/api/tasks/${id}`, 
         updatedTask,
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
@@ -58,7 +58,7 @@ const EmployeeDashboard = () => {
 
   const deleteTask = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/tasks/${id}`, {
+      await axios.delete(`https://employeetaskbackend.onrender.com/api/tasks/${id}`, {
         headers: { Authorization: `Bearer ${user.token}` }
       });
       setTasks(tasks.filter(task => task._id !== id));

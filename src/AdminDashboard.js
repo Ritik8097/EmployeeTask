@@ -17,10 +17,10 @@ const AdminDashboard = () => {
     const fetchTasksAndDepartments = async () => {
       try {
         const [tasksResponse, departmentsResponse] = await Promise.all([
-          axios.get('http://localhost:5000/api/tasks', {
+          axios.get('https://employeetaskbackend.onrender.com/api/tasks', {
             headers: { Authorization: `Bearer ${user.token}` }
           }),
-          axios.get('http://localhost:5000/api/departments', {
+          axios.get('https://employeetaskbackend.onrender.com/api/departments', {
             headers: { Authorization: `Bearer ${user.token}` }
           })
         ]);
@@ -44,7 +44,7 @@ const AdminDashboard = () => {
   const exportToExcel = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/tasks/export?department=${selectedDepartment}`, 
+        `https://employeetaskbackend.onrender.com/api/tasks/export?department=${selectedDepartment}`, 
         {
           headers: { Authorization: `Bearer ${user.token}` },
           responseType: 'blob'
