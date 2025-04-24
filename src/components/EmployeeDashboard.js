@@ -14,7 +14,7 @@ const EmployeeDashboard = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await axios.gethttps://employeetaskbackend.onrender.com/api/tasks/employee/${user.id}`, {
+        const response = await axios.get(`https://employeetaskbackend.onrender.com/api/tasks/employee/${user.id}`, {
           headers: { Authorization: `Bearer ${user.token}` }
         });
         setTasks(response.data);
