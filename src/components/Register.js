@@ -1,5 +1,4 @@
-
-import React, { useState, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import { useNavigate, Link } from "react-router-dom"
 import { AuthContext } from "../context/AuthContext"
 import axios from "axios"
@@ -17,14 +16,21 @@ const Register = () => {
   const { login } = useContext(AuthContext)
 
   // Fetch departments when component mounts
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        // This will fail without authentication, so we'll use a hardcoded list for now
-        // In a real app, you might want to create a public endpoint for this
-        setDepartments(["Developer", "Creatives", "Digital Marketer", "Finance", "HR"])
+        const response = await axios.get("https://employeetaskbackend.onrender.com/api/departments/public")
+        setDepartments(response.data)
       } catch (err) {
         console.error("Failed to fetch departments:", err)
+        // Fallback to hardcoded departments if API fails
+        setDepartments([
+          "Software Development",
+          "Digital Marketing",
+          "Business Development",
+          "Financial Operations",
+          "Human Resources",
+        ])
       }
     }
 
@@ -82,58 +88,61 @@ const Register = () => {
   }
 
   return (
-    <div className="login-container">
-      <div className="login-card">
-        <h2>Employee Task Tracker</h2>
-        <h3>Register</h3>
-        {error && <div className="error-message">{error}</div>}
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="name">Full Name:</label>
-            <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} required />
+    <div className="auth-page register-page">
+      <div className="auth-background"></div>
+      <div className="auth-container">
+        <div className="login-card">
+          <h2>Employee Task Tracker</h2>
+          <h3>Register</h3>
+          {error && <div className="error-message">{error}</div>}
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="name">Full Name:</label>
+              <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} required />
+            </div>
+            <div className="form-group">
+              <label htmlFor="email">Email:</label>
+              <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            </div>
+            <div className="form-group">
+              <label htmlFor="department">Department:</label>
+              <select id="department" value={department} onChange={(e) => setDepartment(e.target.value)} required>
+                <option value="">Select Department</option>
+                {departments.map((dept) => (
+                  <option key={dept} value={dept}>
+                    {dept}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="form-group">
+              <label htmlFor="password">Password:</label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                minLength={6}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="confirmPassword">Confirm Password:</label>
+              <input
+                type="password"
+                id="confirmPassword"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+            </div>
+            <button type="submit" className="login-button" disabled={loading}>
+              {loading ? "Registering..." : "Register"}
+            </button>
+          </form>
+          <div className="register-link">
+            Already have an account? <Link to="/login">Login</Link>
           </div>
-          <div className="form-group">
-            <label htmlFor="email">Email:</label>
-            <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-          </div>
-          <div className="form-group">
-            <label htmlFor="department">Department:</label>
-            <select id="department" value={department} onChange={(e) => setDepartment(e.target.value)} required>
-              <option value="">Select Department</option>
-              {departments.map((dept) => (
-                <option key={dept} value={dept}>
-                  {dept}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">Password:</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              minLength={6}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="confirmPassword">Confirm Password:</label>
-            <input
-              type="password"
-              id="confirmPassword"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-          </div>
-          <button type="submit" className="login-button" disabled={loading}>
-            {loading ? "Registering..." : "Register"}
-          </button>
-        </form>
-        <div className="register-link" style={{ marginTop: "1rem", textAlign: "center" }}>
-          Already have an account? <Link to="/login">Login</Link>
         </div>
       </div>
     </div>
