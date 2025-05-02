@@ -34,7 +34,9 @@ const AdminDashboard = () => {
           }),
         ])
 
-        setTasks(tasksResponse.data)
+        // Sort tasks by createdAt in descending order (newest first)
+        const sortedTasks = tasksResponse.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        setTasks(sortedTasks);
         setDepartments(departmentsResponse.data)
         setLoading(false)
       } catch (err) {
